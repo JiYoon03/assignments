@@ -34,6 +34,7 @@ int main() {
     if(correct==5){
       printf("You guessed it! The word is %s\n",word);
       fail+=1;
+      try=0;
     }
    
   } if(fail==0){
