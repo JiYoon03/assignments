@@ -85,4 +85,3 @@ int main(int argc, char** argv) {
   free(bomb);
   return 0;
 }
-
