@@ -6,10 +6,13 @@ struct Restaurant{
   int num, openH, closeH;
   float stars;
 };
+//%*c: When passed as part of a `scanf` format string, “%*c” means “read and ignore a character”. 
+//There has to be a character there for the conversion to succeed, but other than that, the character is ignored. 
+//A typical use-case would be reading up to some delimiter, then ignoring the delimiter. For example: char s[20];
 int main() {
 int resNum;
 printf("Enter a number of restaurants:");
-scanf("%d",&resNum);
+scanf("%d%*c",&resNum);
 struct Restaurant* listR = malloc(sizeof(struct Restaurant) * resNum) ;
   for(int i =0; i<resNum;i++){
     printf("Enter a name: ");

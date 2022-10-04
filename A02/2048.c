@@ -15,71 +15,31 @@ int main() {
   }
   for(int i =0; i<4;i++){
     for(int j=0;j<4;j++){
-      if(num[i][j]==num[i][j+1]){ //check right
+      if(((j+1)<4)&&num[i][j]==num[i][j+1]){ //check right
          if(largest<(num[i][j]+num[i][j+1])){
            largest = (num[i][j]+num[i][j+1]);
          }
      }
-     if((num[i][j+1])==0){
+     if(((j+1)<4)&&(num[i][j+1])==0){
       int a =j+1;
-	      while(num[i][a]==0){
+	      while(a!=4&&num[i][a]==0){
 	        a++;
 	      }
-	    if(num[i][j]==num[i][a]&&(num[i][j]!=0)){ //check right for 0
+	    if(a!=4&&(num[i][j]==num[i][a])&&(num[i][j]!=0)){ //check right for 0
         if(largest<(num[i][j]+num[i][a])){
           largest = (num[i][j]+num[i][a]);
          }
 	      }
      }
-
-      if(num[i][j]==num[i][j-1]){//check left
-          if(largest<(num[i][j]+num[i][j-1])){
-            largest = (num[i][j]+num[i][j-1]);
-          }
-      }
-
-      if(num[i][j-1]==0){
-        int a =j-1;
-	      while(num[i][a]==0){
-	        a--;
-	      }
-	    if(num[i][j]==num[i][a]&&(num[i][j]!=0)){ //check left for 0
-        if(largest<(num[i][j]+num[i][a])){
-          largest = (num[i][j]+num[i][a]);
-         }
-	      }
-      }
-      if(num[i][j]==num[i+1][j]){//check down
+      if(((i+1)<3)&&num[i][j]==num[i+1][j]){//check down
           if(largest<(num[i][j]+num[i+1][j])){
             largest = (num[i][j]+num[i+1][j]);
           }
-
       }
-      if(num[i+1][j]==0){
+      if(((i+1)<3)&&num[i+1][j]==0){
            int a =i+1;
-	      while(num[a][j]==0){
+	      while(a!=4&&num[a][j]==0){
 	        a++;
-	      }
-	    if(num[i][j]==num[a][j]&&(num[i][j]!=0)){ //check down for 0
-        if(largest<(num[i][j]+num[a][j])){
-          largest = (num[i][j]+num[a][j]);
-         }
-	      }
-      }
-      if(num[i][j]==num[i-1][j]){//check up
-        if(largest<(num[i][j]+num[i-1][j])){
-            largest = (num[i][j]+num[i-1][j]);
-          }
-	      }
-      if(num[i-1][j]==0){
-                 int a =i-1;
-	      while(num[a][j]==0){
-	        a--;
-	      }
-	    if(num[i][j]==num[a][j]&&(num[i][j]!=0)){ //check up for 0
-        if(largest<(num[i][j]+num[a][j])){
-          largest = (num[i][j]+num[a][j]);
-         }
 	      }
       }
     }
