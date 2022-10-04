@@ -8,71 +8,72 @@ struct Restaurant{
  float stars;
 };
 struct node{
- char name[30];
- int openH, closeH;
- float stars;
+ struct Restaurant r;
  struct node* next;
 };
-struct node* insert_front(struct Restaurant listR, struct node* head) {
- struct node* restlist = malloc(sizeof(struct node));
- if (restlist == NULL) {
+
+struct node* insert_sorted(struct Restaurant info, struct node* head) {
+ struct node* new=malloc(sizeof(struct node));
+ if(new == NULL) {
    printf("ERROR: Out of space!\n");
    exit(1);
  }
- strcpy(restlist->name,listR.name);
- restlist->openH = listR.openH;
- restlist->closeH = listR.closeH;
- restlist->stars = listR.stars;
- restlist ->next = head;
- head = restlist;
+ strcpy(new->r.name,info.name);
+ new->r.openH = info.openH;
+ new->r.closeH = info.closeH;
+ new->r.stars = info.stars;
+ new->next = head;
+ head = new;
+ //new->head->NULL
+
+  struct node*node =new;
+  struct node* nextnode = new->next;
+  while (node->next != NULL){
+    float star1= node->r.stars;
+    float star2= nextnode->r.stars;
+    if(star1<star2){
+      new->next = (new->next)->next;
+      (new->next)->next=new;
+    }
+    node=node->next;
+    nextnode = nextnode->next;
+  }
  return head;
 }
 
-struct node* insert_sorted(struct node* head){
- if (head == NULL){
-     return head;
- }
- struct node*now =head;
- struct node*then = head->next;
- while (now->next != NULL){
-float small= now->stars;
-float comp=then->stars;
-	if(small>comp){
- now->next = then->next;
- then->next=now;
-}
-}
-return head;
-}
-
 void print(struct node* list) {
- for (struct node* j = list; j->next != NULL; j = j->next) {
-   printf("%s open: %d:00    close: %d:00    stars: %.1f\n",j->name,j->openH,j->closeH,j->stars);
+ for (struct node* j = list; j != NULL; j = j->next) {
+   printf("%s open: %d:00    close: %d:00    stars: %.1f\n",j->r.name,j->r.openH,j->r.closeH,j->r.stars);
  }
 }
-int main() {
-int resNum;
-struct node *head = NULL;;
-printf("Enter a number of restaurants:");
-scanf("%d",&resNum);
-struct Restaurant* listR = malloc(sizeof(struct Restaurant) * resNum);
-struct node* rest;
- for(int i =0; i<resNum;i++){
-   printf("Enter a name: ");
-   scanf(" %[^\n]%*c", listR[i].name);
-   printf("Open time: ");
-   scanf("%d%*c",&listR[i].openH);
-   printf("Close time: ");
-   scanf("%d%*c",&listR[i].closeH);
-   printf("Stars: ");
-   scanf("%f%*c",&listR[i].stars);
-  rest = insert_front(listR[i],head);
- }  
- print(head);
- struct node* order;
- order = insert_sorted(rest);
- print(order);
+void clear(struct node* list){
+  struct node* current = list;
+  struct node* delete = list;
+  while(current != NULL){
+    current = current ->next;
+    free(delete);
+    delete = current;
+  }
+}
 
- free(listR);
- return 0;
+int main() {
+  int resNum;
+  printf("Enter a number of restaurants:");
+  scanf("%d",&resNum);
+  struct node* head=NULL;
+  for(int i =0; i<resNum;i++){
+    struct Restaurant r;
+    printf("Enter a name: ");
+    scanf(" %[^\n]%*c", r.name);
+    printf("Open time: ");
+    scanf("%d%*c",&r.openH); 
+    printf("Close time: ");
+    scanf("%d%*c",&r.closeH);
+    printf("Stars: ");
+    scanf("%f%*c",&r.stars);
+    head = insert_sorted(r,head);
+  }
+  print(head);
+  clear(head);
+  return 0;
  }
