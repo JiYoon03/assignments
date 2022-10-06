@@ -25,7 +25,7 @@ struct node* insert_sortedfront(struct Restaurant info, struct node* head) {
  new->next = head; //new-head(NULL)
  head = new;//head(new)-head->next-NULL
  struct node* nexthead = head->next;//save head->next node
- if(nexthead!=NULL){//if head next node value is not NULL, then compare two restaurants' stars
+ if(nexthead!=NULL){//if head next node value is not NULL, then compare two restaurnats' stars
     float star1= head->r.stars;
     float star2= nexthead->r.stars;
     if(star1<star2){
