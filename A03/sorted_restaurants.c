@@ -12,9 +12,9 @@ struct node{
  struct node* next;
 };
 
-struct node* insert_sorted(struct Restaurant info, struct node* head) {
+struct node* insert_sortedfront(struct Restaurant info, struct node* head) {
  struct node* new=malloc(sizeof(struct node));
- if(new == NULL) {
+ if(new == NULL) {//check the error
    printf("ERROR: Out of space!\n");
    exit(1);
  }
@@ -22,27 +22,24 @@ struct node* insert_sorted(struct Restaurant info, struct node* head) {
  new->r.openH = info.openH;
  new->r.closeH = info.closeH;
  new->r.stars = info.stars;
- new->next = head;
- head = new;
- //new->head->NULL
-
-  struct node*node =new;
-  struct node* nextnode = new->next;
-  while (node->next != NULL){
-    float star1= node->r.stars;
-    float star2= nextnode->r.stars;
+ new->next = head; //new-head(NULL)
+ head = new;//head(new)-head->next-NULL
+ struct node* nexthead = head->next;//save head->next node
+ if(nexthead!=NULL){//if head next node value is not NULL, then compare two restaurants' stars
+    float star1= head->r.stars;
+    float star2= nexthead->r.stars;
     if(star1<star2){
-      new->next = (new->next)->next;
-      (new->next)->next=new;
+      head->next = nexthead->next;
+      nexthead->next=head;
+      head=nexthead;
     }
-    node=node->next;
-    nextnode = nextnode->next;
-  }
- return head;
-}
+ }
+  return head;  
+  free(new);//free malloc new
+ }
 
 void print(struct node* list) {
- for (struct node* j = list; j != NULL; j = j->next) {
+ for (struct node* j = list; j!= NULL; j = j->next) {
    printf("%s open: %d:00    close: %d:00    stars: %.1f\n",j->r.name,j->r.openH,j->r.closeH,j->r.stars);
  }
 }
@@ -71,7 +68,7 @@ int main() {
     scanf("%d%*c",&r.closeH);
     printf("Stars: ");
     scanf("%f%*c",&r.stars);
-    head = insert_sorted(r,head);
+    head = insert_sortedfront(r,head);
   }
   print(head);
   clear(head);
