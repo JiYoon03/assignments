@@ -19,14 +19,16 @@ struct Braces{
   int line;
   int charnum;
 };
-typedef struct stack{
+
+typedef struct stack{//arraylist form
   int top;//top of index
   struct Braces *data;//ptr of index
   int max;//maxsize
 }stack;
+
 //initialize stack
 void StackInitialize(struct stack* stk, int size){
-  stk->data = malloc(sizeof(struct Braces));
+  stk->data = malloc(sizeof(struct Braces)*size);
   stk->top = -1;
   stk->max = size;
 }
@@ -64,8 +66,7 @@ void clear(stack *stk){
 int main(int argc, char** argv) {
   FILE *infile;
   //maxline & max char in lines & helper for finding maxchar
-  int maxline=0;
-  int maxchar=0;
+  int maxline=100;
   int numchar=0;
   int bracesline=1;
   char ch;
@@ -74,36 +75,23 @@ int main(int argc, char** argv) {
     printf("usage: ./match_braces filename.c\n");
   }  
   infile = fopen(argv[1], "r");
-
   // relative path name of file, read mode
   if (infile == NULL) {
     printf("Error: unable to open file %s\n", argv[1]);
     exit(1);
   }
-//find maxline & maxchar
 
+//no confues! fgetc/fgets: fgetc(FILE* infile) || fgets(char,int num,FILE)
+//only allow to use fgetc one time ;
+//use one stack
+//find maxline & maxchar
 //////////////////////////ASK is this is right way to read infile??
-  while((ch = fgetc(infile))!=EOF) {//EOF is End Of File
-    //no confues! fgetc/fgets: fgetc(FILE* infile) || fgets(char,int num,FILE)
-    //find maxline and maxchar
-    numchar++;
-    if(ch=='\n'){
-      maxline++;
-      if(numchar>maxchar){//if currentline numchar is bigger than maxchar 
-        maxchar=numchar;//update maxchar as currentline numchar
-      }
-      numchar=0;//reset numchar for nextline
-    }
-  }
-  
-  numchar=0;//initalize numchar for no error
   struct Braces open;
   struct Braces close;
   struct stack openbraces;
   StackInitialize(&openbraces,maxline);
-  struct stack closebraces;
-  StackInitialize(&closebraces,maxline); 
-  while((ch=fgetc(infile))!=EOF){
+  while((ch=fgetc(infile))!=EOF){//EOF is End Of File
+    //printf("%c\n",ch);
     numchar++;
     if(ch=='{'){//when find { push it to openbraces stack
       open.line=bracesline;
@@ -113,32 +101,26 @@ int main(int argc, char** argv) {
     if(ch=='}'){//when find } push it to closebrace stack
       close.line=bracesline;
       close.charnum=numchar;
-      push(&closebraces,close);   
-      if(!isEmpty(&openbraces)&&!isEmpty(&closebraces)){//both is not empty
+      if(!isEmpty(&openbraces)){//both is not empty
         printf("Found matching braces:");
         pop(&openbraces);
-        printf("->");
-        pop(&closebraces);
-        printf("\n");
-      }
-      if(!isEmpty(&openbraces)&&isEmpty(&closebraces)){//openbraces is not empty but closebraces is empty
-        printf("Unmatched brace on (Line,Column): ");
-        pop(&openbraces);
-        printf("\n");
-      }
-      if(!isEmpty(&closebraces)&&isEmpty(&openbraces)){//closebraces is not empty but closebraces is empty
-        printf("Unmatched brace on (Line,Column): ");
-        pop(&closebraces);
-        printf("\n");
+        printf("->(%d,%d)\n",close.line,close.charnum);
+      }else if(isEmpty(&openbraces)){//closebraces is not empty but open is empty
+        printf("Unmatched brace on (Line,Column): (%d,%d)\n",close.line,close.charnum);
       }
     }
     if(ch=='\n'){
       bracesline++;
       numchar=0;//reset numchar for nextline
-    }
+    }  
   }
-  clear(&closebraces);
+  if(!isEmpty(&openbraces)){//openbraces is not empty but closebraces is empty
+    printf("Unmatched brace on (Line,Column): ");
+    pop(&openbraces);
+    printf("\n");
+  }
   clear(&openbraces);
+  free(openbraces.data);  
   fclose(infile);
   return 0;
 }
