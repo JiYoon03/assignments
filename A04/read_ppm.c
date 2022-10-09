@@ -19,7 +19,8 @@ struct ppm_pixel* read_ppm(const char* filename, int* w, int* h) {
     return NULL;
   }
   // allocate array for pixels
-  unsigned char* pixels = malloc(sizeof(unsigned char)*3* w * h);
+  //ch2 pointer parameter
+  unsigned char* pixels[3* w * h];
   struct ppm_pixel* ppm = malloc(sizeof(struct ppm_pixel) * w * h);
 
   // formatted read of header
@@ -32,9 +33,11 @@ struct ppm_pixel* read_ppm(const char* filename, int* w, int* h) {
   while (fgets(pixels,3*w*h, fr) != EOF) {
     linenum++;
     if(linenum==3){
-      printf("with width %s and height %s",pixels[0],pixels[2]);
+      fscanf("%d %d",&w, &h);
+      //printf("with width %s and height %s",pixels[0],pixels[2]);
     }
     if(linenum==5){//assume that line 5 always contains ppm
+    //fread function *********************************************
       int ppmhight = 0;
       while(ppmhight<h){
         int ppmwidth = 0;//everytime move to nextline, initalize ppmwidth
@@ -58,8 +61,8 @@ struct ppm_pixel* read_ppm(const char* filename, int* w, int* h) {
   } // end of while
 
   return ppm;
-  free(pixels);
-  fclose(infile);
+  free(ppm);
+  fclose(fr);
 }
 
 struct ppm_pixel** read_ppm_2d(const char* filename, int* w, int* h) {
