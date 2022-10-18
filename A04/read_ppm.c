@@ -8,7 +8,7 @@
 // Choose *one* to implement
 struct ppm_pixel* read_ppm(const char* filename, int* w, int* h) {
   // open the file to read
-  FILE* fr = fopen(filename, "rb");
+  FILE* fr = fopen(filename, "rb");//read binary file in c: "rb"
   if(!fr){//when filename is invalid
     return NULL;
   }
