@@ -12,8 +12,8 @@ void write_ppm(const char* filename, struct ppm_pixel* pixels, int w, int h) {
       struct ppm_pixel p = pixels[j*w+i]; 
       static unsigned char color[3];
         color[0]= p.red;
-        color[1]= p.blue;
-        color[2]= p.green;
+        color[1]= p.green;
+        color[2]= p.blue;
       fwrite(color, 1, 3, fp);
     }
   }
