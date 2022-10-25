@@ -1,8 +1,5 @@
 #include <stdio.h>
 #include <string.h>
-
-
-
 int main(){
     char ascii_str[1000];
     char ascii_chan[1000];
