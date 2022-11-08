@@ -76,6 +76,7 @@ unsigned char* decode = malloc(sizeof(unsigned char)*10000000);
  free(read);
  free(decode);
  free(listofnum);
+ free(pixels);
 }
  
 
