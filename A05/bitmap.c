@@ -22,7 +22,9 @@ int main() {
       printf("\n");
     }
   }
+  free(elements);
   return 0;
+ 
 }
 void PrintBinary(int num)
 {	
