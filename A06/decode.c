@@ -4,8 +4,6 @@
 #include <math.h>
 #include "read_ppm.h"
 
-
-
 int main(int argc, char** argv) {
   if (argc != 2) {
     printf("usage: decode <file.ppm>\n");
@@ -14,13 +12,13 @@ int main(int argc, char** argv) {
   int w,h;
   struct ppm_pixel* pixels = read_ppm(argv[1], &w, &h);
   printf("Reading %s with width %d and height %d\n",argv[1],w,h);
-  for (int r = 0; r < h; r++) {
+  /*for (int r = 0; r < h; r++) {
     for (int c = 0; c < w; c++) {
        struct ppm_pixel p = pixels[r*w+c]; 
-       printf("(%d,%d,%d) ", p.red, p.green, p.blue); 
+       printf("(%d,%d,%d) ", p.red, p.green, p.blue); //check orginial one
     }
     printf("\n");
-  }
+  }*/
  struct ppm_pixel* read = read_ppm(argv[1],&w,&h);
  unsigned int* listofnum = malloc(sizeof(unsigned int)*30000000);
  int count =0;
@@ -50,7 +48,7 @@ int main(int argc, char** argv) {
    }
  }
  for(int i =0; i<count;i++){
-     printf("listofnum: %d\n",listofnum[i]);
+     //printf("listofnum: %d\n",listofnum[i]);
   }
 unsigned char* decode = malloc(sizeof(unsigned char)*10000000);
  int x=0;
@@ -69,9 +67,12 @@ unsigned char* decode = malloc(sizeof(unsigned char)*10000000);
  }
  printf("Max number of characters in the image: %d\n",x);
  for(int i =0; i<x;i++){
-   printf("decode: %c\n",decode[i]);
-   printf("%02X\n", decode[i]);
-
+  if(decode[i]!=0){
+   printf("%c",decode[i]);
+  }else{
+    break;
+  }
+   //printf("%02X\n", decode[i]);
  }
  free(read);
  free(decode);
