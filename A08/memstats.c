@@ -21,7 +21,7 @@ void memstats(struct chunk* freelist, void* buffer[], int len) {
   int countfreemem =0;
   struct chunk* nextfree;
   nextfree = freelist;
-  while(nextfree->next!=NULL){
+  while(nextfree!=NULL){
     countfree++;
     countfreemem += nextfree->size;
     nextfree = nextfree->next;
@@ -43,7 +43,7 @@ void memstats(struct chunk* freelist, void* buffer[], int len) {
 
   printf("Total blocks: %d Free blocks: %d Used blocks: %d\n",totalblock,countfree,countused);
   printf("Total memory allocated: %d Free memory: %d Used memory: %d\n", totalmem,countfreemem,countusedmem);
-  printf("Underutilized memory: %f\n", underutilizedmem/totalmem);
+  printf("Underutilized memory: %0.2f\n", underutilizedmem/countusedmem);
 }
 
 int main ( int argc, char* argv[]) {
