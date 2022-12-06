@@ -69,7 +69,7 @@ int main(int argc, char* argv[]) {
   gettimeofday(&tend, NULL);
   double  timer = tend.tv_sec - tstart.tv_sec + (tend.tv_usec - tstart.tv_usec)/1.e6;
   char* name= malloc(sizeof(char)*1000);
-  sprintf(name,"multi-mandelbrot-%d-%lu.ppm",size,time(0));
+  sprintf(name,"mandelbrot-%d-%lu.ppm",size,time(0));
   write_ppm(name, color, size, size);
   printf("Computed mandelbrot set (%dx%d) in %f seconds\n",size,size,timer);
   printf("Writing file: %s\n",name);
